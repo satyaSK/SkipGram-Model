@@ -1,5 +1,7 @@
 # Skip-Gram Model 
-The above code implements the Skip-gram model from [this paper](https://arxiv.org/pdf/1310.4546.pdf). The main idea is to form word vector representations without losing the semantic information and relationships amongst various words. This is achieved by mapping the words to a higher dimensional space. As a final observation it seems that similarities between words seem to be encoded in the vector difference between the words. Also I've included a word embedding visualization to visualize the output of this project.
+* The above code implements the Skip-gram model from [this paper](https://arxiv.org/pdf/1310.4546.pdf). The main idea is to form word vector representations without losing the semantic information and relationships amongst various words.
+* This is achieved by mapping the words to a higher dimensional space. As a final observation it seems that similarities between words seem to be encoded in the vector difference between the words. 
+* I've also included a word embedding visualization to visualize the output of this project.
 
 ## Dependencies
 * Tensorflow
