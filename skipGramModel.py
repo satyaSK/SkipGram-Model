@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 #------------------------------------------------------------
+from tqdm import tqdm
 from helperfn import get_data, checkIt, create_directory
 import tensorflow as tf
 from tensorflow.contrib.tensorboard.plugins import projector 
@@ -75,7 +76,7 @@ with tf.Session() as sess:
 
 	total_error = 0
 	print("\nGood to go! Training Starts\n")
-	for i in range(initial_step, initial_step + total_iterations):
+	for i in tqdm(range(initial_step, initial_step + total_iterations)):
 		start =time.time()
 		center_batch, target_batch = next(generated_batch)
 		e,_,summary = sess.run([loss, optimizer, summary_op], feed_dict={center_words:center_batch, target_words:target_batch})
