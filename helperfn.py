@@ -1,9 +1,6 @@
 #import Dependencies
-#-----------for backward compatibility of the code-----------
-# So that it can function in the future also!!
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# its the missing link between python2 and python3, so our  you can slowly be accustomed to incompatible changes!
+from __future__ import absolute_import, division, print_function
 #------------------------------------------------------------
 import tensorflow as tf# Good friend tensorflow
 from six.moves import urllib # Offcourse we'll be downloading from a given URL
@@ -15,15 +12,13 @@ import os #for os related operations
 import sys
 sys.path.append('..')
 
-
-
-
+#some important global variables
 download_from_url = 'http://mattmahoney.net/dc/'# download from where??
 n_bytes = 31344016# size of the file which will be dowwnloaded
 dataset_folder = "Dataset/"#save the dataset to dataset_folder
 FILE_name = "text8.zip"#name of the text corpus we want to download
 data_holder = "Dataset"
-#------------------------------------------------------------------
+
 #Checks whether the data directory is present! If not then it is created!
 def checkIt():
 	if os.path.exists(data_holder):
@@ -33,7 +28,7 @@ def checkIt():
 		create_directory('Dataset')
 		print("You didn't have a data folder so it has been added to your working directory!!!")
 
-#------------------------------------------------------------------
+
 #Create a simple directory in the working directory
 def create_directory(path):
     try:
@@ -41,7 +36,7 @@ def create_directory(path):
     except OSError:
     	pass
 
-#-------------------------------------------------------------------
+
 #Download the file if not already downloaded(if already downloaded, return the path)
 def download_file(n_bytes, f_name):
 	downloaded_dataset_path =  dataset_folder + f_name
@@ -57,14 +52,14 @@ def download_file(n_bytes, f_name):
 	else:
 		raise Exception("Something bad happened, try downloading the file manually from "+download_from_url)
 	return downloaded_dataset_path
-#--------------------------------------------------------------------
+
 #Read the zip file to get all the tokens
 def read_zip(file_path):
 	with zipfile.ZipFile(file_path) as f:
 		tokens = tf.compat.as_str(f.read(f.namelist()[0])).split()#namelist gives names of file, read() reads the content and tf.compat.as_str converts to strings
 	return tokens
 
-#---------------------------------------------------------------------
+
 #Create the dictionary of all the indivisual unique(most common) words
 def create_vocab(tokens, vocab_size):
 	count = [('NAN', -1)]
@@ -83,7 +78,7 @@ def create_vocab(tokens, vocab_size):
 		index_dict = dict(zip(dictionary.values(), dictionary.keys()))
 	return dictionary, index_dict
 
-#---------------------------------------------------------------------
+
 #Give all the tokens and the dictionary of token to this funtion to spit out all the words converted to indexes
 def word_to_idx(words, dictionary):
 	word_indexes = []
@@ -95,7 +90,7 @@ def word_to_idx(words, dictionary):
 			word_indexes.append(unknown)#thats the index of all unknown(UNK) words
 	return word_indexes
 
-#-----------------------------------------------------------------------
+
 #For every center word--> give back a randomly generated (center_word,target_word) pair, before and after the center word within a radius of radius = window size 
 def generate_pairs(word_indexes, window):
 	for idx, center_word in enumerate(word_indexes):
@@ -107,9 +102,9 @@ def generate_pairs(word_indexes, window):
 		for target_word in word_indexes[idx + 1 : idx+context_idx+1]:
 			yield center_word, target_word
 
-#------------------------------------------------------------------------
+
 #give this function an iteratable(i dont know if that word exits :D) list to generate batches
-#IMPORTANT: Im "generating" and not "returning". Baiscally the local variables are not lost in the case of "generating"
+
 def next_batch(iterator, batch_size):
 	while True:
 		center_batch = np.zeros(batch_size, dtype=np.int32)
@@ -118,7 +113,7 @@ def next_batch(iterator, batch_size):
 			center_batch[idx], target_batch[idx] = next(iterator)
 		yield center_batch, target_batch
 
-#------------------------------------------------------------------------
+
 # This function simply returns the dictionary of:
 #--converting words to index-- & --converting index to words--
 def two_way_dict(vocab_size):
@@ -126,7 +121,7 @@ def two_way_dict(vocab_size):
 	tokens = read_zip(downloaded_dataset_path)
 	return create_vocab(tokens, vocab_size)# returns dictionary and index_dict
 
-#-----------------------------------------------------------------------
+
 #Basically use all the fucntions created so far to generate a simple batch(All this for a simple batch generation?? YES!! It requires a lot of HardWork!)
 def get_data(vocab_size, batch_size, window_size):
 	downloaded_dataset_path = download_file(n_bytes, FILE_name)#downloaded file
@@ -138,9 +133,6 @@ def get_data(vocab_size, batch_size, window_size):
 	batch = next_batch(generated, batch_size)
 	return batch
 
-#-----------------------------------------------------------------------
-######################### PRE-PROCESSING ENDS #######################
-#-----------------------------------------------------------------------
 
 
 
