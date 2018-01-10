@@ -25,7 +25,7 @@ Words -> Convert to vector embeddings -> feed into the model -> calculate loss -
 * I haven't incuded the word tags in this picture to keep the visualization clean. But they can be easily seen on tensorboard.
 
 ## What are word Embeddings bro?
-* Put in simple words, as defined by [Christopher Olah](http://colah.github.io), word embedding is a parameterized function whaich maps words in some given language, to higher dimensional vectors. And this fucntion is defined by the ```embedding matrix```.
+* As defined by [Christopher Olah](http://colah.github.io), word embedding is a parameterized function whaich maps words in some given language, to higher dimensional vectors. And this fucntion is defined by the ```embedding matrix```.
 * Our network cannot and does not deal with strings during training, for this reason, before we pass the words through our network, we have to convert them into numbers of some form(not just plain numbers).
 * Converting the words into plain integers to pass them for training is of no use for 2 reasons
 	* The integer associated with each word will vary in magnitude(in a random way, rendering it semantically senseless).
