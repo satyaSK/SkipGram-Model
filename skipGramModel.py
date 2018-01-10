@@ -1,5 +1,5 @@
 #Import Dependencies
-#-----------for backward compatibility of the code-----------
+#-----------for compatibility of the code-----------
 # its the missing link between python2 and python3, so our  you can slowly be accustomed to incompatible changes!
 from __future__ import absolute_import, division, print_function 
 #------------------------------------------------------------
@@ -92,6 +92,7 @@ with tf.Session() as sess:
 	end_embedding_M = sess.run(embedding_matrix)
 	Variable_EMBEDDING = tf.Variable(end_embedding_M[:1000], name='top_embedding')# turn embedding matrix into variable
 	sess.run(Variable_EMBEDDING.initializer)
+	
 	config = projector.ProjectorConfig()
 	embedding_writer = tf.summary.FileWriter("Visualize_Embeddings")
 
