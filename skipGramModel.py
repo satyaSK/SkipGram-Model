@@ -1,9 +1,7 @@
 #Import Dependencies
 #-----------for backward compatibility of the code-----------
-# So that it can function in the future also!!
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# its the missing link between python2 and python3, so our  you can slowly be accustomed to incompatible changes!
+from __future__ import absolute_import, division, print_function 
 #------------------------------------------------------------
 from tqdm import tqdm
 from helperfn import get_data, checkIt, create_directory
@@ -58,21 +56,21 @@ with tf.name_scope("summaries"):
 	tf.summary.scalar('Loss',loss)	
 	summary_op = tf.summary.merge_all()
 
-####################### FOR CHECKPOINTS ###########################
+
 create_directory('Checkpoints')#make a required directory
 saver = tf.train.Saver() #initialize save object
-###################################################################
+
 
 with tf.Session() as sess:
 	sess.run(tf.global_variables_initializer())
 	graph_writer = tf.summary.FileWriter("./visualize", sess.graph)
 
-	################## FETCH EXISTING CHECKPOINT ##################
+	
 	ckpt = tf.train.get_checkpoint_state(os.path.dirname('Checkpoints/checkpoint'))
 	if ckpt and ckpt.model_checkpoint_path:
 		saver.restore(sess, ckpt.model_checkpoint_path)
 	initial_step = global_step.eval()
-	###############################################################
+	
 
 	total_error = 0
 	print("\nGood to go! Training Starts\n")
@@ -86,12 +84,11 @@ with tf.Session() as sess:
 		if i%skip == 0:
 			end = time.time()
 			print('Loss at step {0} is {1:.3f}     Time:{2:.3f}'.format(i, total_error,end-start))
-			#########################################################
+			
 			saver.save(sess, 'Checkpoints/checky', i+1)
-			#########################################################
+			
 			total_error = 0
 
-	########### COZ EMBEDDING VISUALIZERS ARE COOL ##############
 	end_embedding_M = sess.run(embedding_matrix)
 	Variable_EMBEDDING = tf.Variable(end_embedding_M[:1000], name='top_embedding')# turn embedding matrix into variable
 	sess.run(Variable_EMBEDDING.initializer)
@@ -105,7 +102,7 @@ with tf.Session() as sess:
 	projector.visualize_embeddings(embedding_writer, config)
 	saver_embed = tf.train.Saver([Variable_EMBEDDING])
 	saver_embed.save(sess, "Visualize_Embeddings/model.ckpt", 1)
-	##############################################################
+	
 	#Visualization commands
 	#tensorboard --logdir="visualize"
 	#tensorboard --logdir="Visualize_Embeddings"
